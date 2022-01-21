@@ -1,0 +1,26 @@
+---
+
+  - name: Check If SUSEConnect Is Available
+    stat:
+      path: /usr/sbin/SUSEConnect
+    register: suseconnect_bin_check
+
+  - name: Fail If SUSEConnect Not Available
+    fail:
+      msg: 'This role needs SUSEConnect available and executable!'
+    when:
+      - ( suseconnect_bin_check.stat.executable is defined and not suseconnect_bin_check.stat.executable)
+
+  - name: Check connectivity https://scc.suse.com and it returns a status 200
+    uri:
+      url: https://scc.suse.com
+      status_code: 200
+
+  - name: Save Registration Status Into Temp Var
+    command: /usr/sbin/SUSEConnect -s
+    register: suseconnect_status
+    changed_when: False
+
+  - name: Register SLES
+    command: "/usr/sbin/SUSEConnect -r {{ regcode }}"
+    when: ( suseconnect_status.stdout | from_json | json_query('[1].status')) != 'Registered'

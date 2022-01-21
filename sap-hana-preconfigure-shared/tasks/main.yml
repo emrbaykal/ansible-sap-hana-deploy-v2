@@ -1,0 +1,54 @@
+---
+# tasks file for suse-os-preconfigure
+
+  - name: Gathering facts
+    setup:
+    tags:
+      - role::sap-hana-preconfigure-shared
+      - role::sap-hana-preconfigure-shared::setup
+
+  - import_tasks: 01-configure-hostname.yml
+    tags:
+      - role::sap-hana-preconfigure-shared
+      - role::sap-hana-preconfigure-shared::hostname
+
+  - import_tasks: 02-configure-issue.yml
+    tags:
+      - role::sap-hana-preconfigure-shared
+      - role::sap-hana-preconfigure-shared::issue
+
+  - import_tasks: 03-configure-network-time-and-date.yml
+    tags:
+    - role::sap-hana-preconfigure-shared
+    - role::sap-hana-preconfigure-shared::date-time
+
+  -  import_tasks: 04-tune-snapshot-parameters.yml
+     tags:
+     - role::sap-hana-preconfigure-shared
+     - role::sap-hana-preconfigure-shared::snapshot
+
+  - import_tasks: 05-register-suse.yml
+    tags:
+    - role::sap-hana-preconfigure-shared
+    - role::sap-hana-preconfigure-shared::register-suse
+
+  - import_tasks: 06-update-operating-system.yml
+    tags:
+    - role::sap-hana-preconfigure-shared
+    - role::sap-hana-preconfigure-shared:update-os
+
+  - import_tasks: 07-sap-hana-filesystem.yml
+    tags:
+    - role::sap-hana-preconfigure-shared
+    - role::sap-hana-preconfigure-shared::filesystem
+
+  - import_tasks: 08-configuring-system-parameters.yml
+    tags:
+    - role::sap-hana-preconfigure-shared
+    - role::sap-hana-preconfigure-shared::system-parameters
+
+  - import_tasks: 09-pmem-config.yml
+    when:  pmem == true
+    tags:
+    - role::sap-hana-preconfigure-shared
+    - role::sap-hana-preconfigure-shared::pmem-config

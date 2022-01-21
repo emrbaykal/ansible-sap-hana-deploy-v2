@@ -1,0 +1,30 @@
+---
+# handlers file for sap-hana-security-hardening
+
+  - name: chkstat
+    command: chkstat --system --set
+
+  - name: newaliases
+    shell: '/usr/bin/newaliases'
+
+  - name: postmap
+    command: postmap /etc/postfix/sender_canonical
+
+  - name: postfix
+    service:
+      name: postfix
+      state: restarted
+  
+  - name: restart_auditd_service
+    service:
+      name: auditd
+      state: restarted
+
+  - name: restart_rsyslog_service
+    service:
+      name: rsyslog
+      state: restarted    
+
+  - name: rebuild_initramfs
+    command: dracut -f
+

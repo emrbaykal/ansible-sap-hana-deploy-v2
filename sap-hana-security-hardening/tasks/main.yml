@@ -1,0 +1,89 @@
+---
+# tasks file for sap-hana-security-hardening
+#
+  - name: Gathering facts
+    setup:
+    tags:
+      - role::sap-hana-security-hardening
+      - role::sap-hana-security-hardening::setup
+
+  - import_tasks: 01-ssh-client-security.yml
+    tags:
+      - role::sap-hana-security-hardening
+      - role::sap-hana-security-hardening::ssh-client-security
+
+  - import_tasks: 02-suse-security-checker.yml
+    tags:
+      - role::sap-hana-security-hardening
+      - role::sap-hana-security-hardening::suse-security-checker
+
+  - import_tasks: 03-postfix-config.yml
+    tags:
+      - role::sap-hana-security-hardening
+      - role::sap-hana-security-hardening::postfix-config
+
+  - import_tasks: 04-disable-ctrl-alt-delete.yml
+    tags:
+      - role::sap-hana-security-hardening
+      - role::sap-hana-security-hardening::disable-ctrl-alt-delete
+
+  - import_tasks: 05-cronjobs-hardening.yml
+    tags:
+      - role::sap-hana-security-hardening
+      - role::sap-hana-security-hardening::cronjobs-hardening
+
+  - import_tasks: 06-restrict-sudo.yml
+    tags:
+      - role::sap-hana-security-hardening
+      - role::sap-hana-security-hardening::restrict-sudo
+
+  - import_tasks: 07-login-definitions.yml
+    tags:
+      - role::sap-hana-security-hardening
+      - role::sap-hana-security-hardening::login-definitions
+
+  - import_tasks: 08-create-operator-user.yml
+    tags:
+      - role::sap-hana-security-hardening
+      - role::sap-hana-security-hardening::create-operator-user
+
+  - import_tasks: 09-password-strength.yml
+    tags:
+      - role::sap-hana-security-hardening
+      - role::sap-hana-security-hardening::password-strength
+
+  - import_tasks: 10-improve-network-security.yml
+    tags:
+      - role::sap-hana-security-hardening
+      - role::sap-hana-security-hardening::improve-network-security
+
+  - import_tasks: 11-file-system-permission.yml
+    tags:
+      - role::sap-hana-security-hardening
+      - role::sap-hana-security-hardening::file-system-permission
+
+  - import_tasks: 12-configure-audit-log.yml
+    tags:
+      - role::sap-hana-security-hardening
+      - role::sap-hana-security-hardening::configure-audit-log
+
+  - import_tasks: 13-rsyslog-config.yml
+    tags:
+      - role::sap-hana-security-hardening
+      - role::sap-hana-security-hardening::rsyslog-config
+
+  - import_tasks: 14-disable-x-windows.yml
+    tags:
+      - role::sap-hana-security-hardening
+      - role::sap-hana-security-hardening::disable-x-windows
+
+  - import_tasks: 15-disable-usb-mass-storage.yml
+    tags:
+      - role::sap-hana-security-hardening
+      - role::sap-hana-security-hardening::disable-usb-mass-storage
+
+  - import_tasks: 16-hana-firewall.yml
+    when:  firewall == true
+    tags:
+      - role::sap-hana-security-hardening
+      - role::sap-hana-security-hardening::hana-firewall

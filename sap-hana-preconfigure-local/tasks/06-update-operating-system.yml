@@ -1,0 +1,27 @@
+---
+
+ - name: Update Latest Operating System Patch
+   zypper:
+    name: '*'
+    state: latest
+
+ - name: Check for reboot hint.
+   command: needs-restarting -r
+   #ignore_errors: true
+   register: reboot_hint
+   failed_when: reboot_hint.rc >= 2
+
+ - name: Rebooting ...
+   shell: sleep 2 && /sbin/shutdown -r now "Reboot required for updated kernel"
+   async: 1
+   poll: 0
+   ignore_errors: true
+   when: reboot_hint.rc == 1
+   register: rebooting
+
+ - name: Wait for system to become reachable
+   wait_for_connection:
+     timeout: 900
+     sleep: 15
+     delay: 30
+   when: rebooting.changed
